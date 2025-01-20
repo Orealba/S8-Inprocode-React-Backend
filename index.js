@@ -70,16 +70,55 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-
 //GET TABLE USERS
 
 app.get('/usuarios', async (req, res) => {
-    try {
-      const query = 'SELECT * FROM usuarios;';
-      const { rows } = await pool.query(query);
-      res.status(200).json(rows);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('failed');
+  try {
+    const query = 'SELECT * FROM usuarios;';
+    const { rows } = await pool.query(query);
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('failed');
+  }
+});
+
+//GET specific user
+
+app.get('/usuarios/:id', async (req, res) => {
+  console.log(req);
+  try {
+    const [id] = req.params['id'];
+    console.log(id);
+
+    const query = 'SELECT * FROM usuarios WHERE id = $1;';
+    const { rows } = await pool.query(query, [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).send('this user is not in the database');
     }
-  });
+
+    res.status(200).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('failed');
+  }
+});
+
+//DELETE ME QUEDÉ AQUI
+app.delete('/usuarios/:id', async (req, res) => {
+  try {
+    const { id } = req.params['id'];
+    const query = 'DELETE FROM albums WHERE id = $1 RETURNING *;';
+    const { rows } = await pool.query(query, [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).send('we have not found the album');
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('some error has occured');
+  }
+});
