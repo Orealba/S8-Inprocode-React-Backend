@@ -86,10 +86,10 @@ app.get('/usuarios', async (req, res) => {
 //GET specific user
 
 app.get('/usuarios/:id', async (req, res) => {
-  console.log(req);
+  
   try {
     const [id] = req.params['id'];
-    console.log(id);
+    
 
     const query = 'SELECT * FROM usuarios WHERE id = $1;';
     const { rows } = await pool.query(query, [id]);
@@ -109,11 +109,11 @@ app.get('/usuarios/:id', async (req, res) => {
 app.delete('/usuarios/:id', async (req, res) => {
   try {
     const { id } = req.params['id'];
-    const query = 'DELETE FROM albums WHERE id = $1 RETURNING *;';
+    const query = 'DELETE FROM usuarios WHERE id = $1 RETURNING *;';
     const { rows } = await pool.query(query, [id]);
 
     if (rows.length === 0) {
-      return res.status(404).send('we have not found the album');
+      return res.status(404).send('we have not found the user');
     }
 
     res.status(200).json(rows[0]);
