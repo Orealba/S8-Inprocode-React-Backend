@@ -13,7 +13,7 @@ const pool = new Pool({
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!!!!xxx!!');
+  res.send('Hello World!!!!!');
 });
 
 //POST TABLA USERS
@@ -69,3 +69,17 @@ app.post('/usuarios', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+
+//GET TABLE USERS
+
+app.get('/usuarios', async (req, res) => {
+    try {
+      const query = 'SELECT * FROM usuarios;';
+      const { rows } = await pool.query(query);
+      res.status(200).json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('failed');
+    }
+  });
