@@ -86,10 +86,8 @@ app.get('/usuarios', async (req, res) => {
 //GET specific user
 
 app.get('/usuarios/:id', async (req, res) => {
-  
   try {
     const [id] = req.params['id'];
-    
 
     const query = 'SELECT * FROM usuarios WHERE id = $1;';
     const { rows } = await pool.query(query, [id]);
@@ -108,7 +106,7 @@ app.get('/usuarios/:id', async (req, res) => {
 //DELETE ME QUEDÉ AQUI
 app.delete('/usuarios/:id', async (req, res) => {
   try {
-    const { id } = req.params['id'];
+    const { id } = req.params;
     const query = 'DELETE FROM usuarios WHERE id = $1 RETURNING *;';
     const { rows } = await pool.query(query, [id]);
 
