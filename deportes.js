@@ -89,6 +89,7 @@ router.put('/deportes/:id', async (req, res) => {
           WHERE id = $2
           RETURNING *;
         `;
+    
     const { rows } = await pool.query(query, [nombre, id]);
 
     if (rows.length === 0) {
@@ -98,7 +99,7 @@ router.put('/deportes/:id', async (req, res) => {
     res.status(200).json(rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Some error has occured failed');
+    res.status(500).send(`Some error has occured failed ${err.message}`);
   }
 });
 
