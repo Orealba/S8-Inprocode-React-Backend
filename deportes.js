@@ -1,6 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const router = express.Router();
+
 const pool = new Pool({
   user: process.env.USER,
   host: process.env.HOST,
@@ -9,7 +10,7 @@ const pool = new Pool({
   port: process.env.PORT,
 });
 
-//post deportes
+//post tabla deportes
 router.post('/deportes', async (req, res) => {
   // Validate the incoming JSON data
   const { nombre } = req.body;
@@ -32,6 +33,87 @@ router.post('/deportes', async (req, res) => {
     res
       .status(201)
       .send({ message: 'New deporte created', usuarioId: result.rows[0].id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('some error has occured');
+  }
+});
+
+//GET TABLE DEPORTES
+
+router.get('/deportes', async (req, res) => {
+  try {
+    const query = 'SELECT * FROM deportes;';
+    const { rows } = await pool.query(query);
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('failed');
+  }
+});
+
+//GET specific deporte
+
+router.get('/deportes/:id', async (req, res) => {
+  try {
+    const [id] = req.params['id'];
+
+    const query = 'SELECT * FROM deportes WHERE id = $1;';
+    const { rows } = await pool.query(query, [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).send('this deporte is not in the database');
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('failed');
+  }
+});
+
+//PUT NO FUNCIONA
+router.put('/deportes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre } = req.body;
+
+    if (!nombre) {
+      return res.status(400).send('provide a field (nombre)');
+    }
+
+    const query = `
+          UPDATE deportes
+          SET nombre = COALESCE($1, nombre),
+              
+          WHERE id = $2
+          RETURNING *;
+        `;
+    const { rows } = await pool.query(query, [nombre, id]);
+
+    if (rows.length === 0) {
+      return res.status(404).send('Cannot find anything');
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Some error has occured failed');
+  }
+});
+
+//DELETE
+router.delete('/deportes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = 'DELETE FROM deportes WHERE id = $1 RETURNING *;';
+    const { rows } = await pool.query(query, [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).send('we have not found deporte');
+    }
+
+    res.status(200).json(rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).send('some error has occured');
