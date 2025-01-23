@@ -84,12 +84,12 @@ router.put('/deportes/:id', async (req, res) => {
 
     const query = `
           UPDATE deportes
-          SET nombre = COALESCE($1, nombre),
+          SET nombre = COALESCE($1, nombre)
               
           WHERE id = $2
           RETURNING *;
         `;
-    
+
     const { rows } = await pool.query(query, [nombre, id]);
 
     if (rows.length === 0) {
