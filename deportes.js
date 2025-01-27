@@ -53,12 +53,17 @@ router.get('/deportes', async (req, res) => {
 });
 
 //GET specific deporte
-
+//
 router.get('/deportes/:id', async (req, res) => {
   try {
     const [id] = req.params['id'];
 
-    const query = 'SELECT * FROM deportes WHERE id = $1;';
+    const query = `SELECT d.*, array_agg(json_build_object('nombre', u.nombre, 'apellido', u.apellido, 'edad', u.edad)) AS usuarios
+        FROM deportes d
+        LEFT JOIN usuario_deporte ud ON d.id = ud.deporte_id
+        LEFT JOIN usuarios u ON ud.usuario_id = u.id
+        WHERE d.id = $1
+        GROUP BY d.id;`;
     const { rows } = await pool.query(query, [id]);
 
     if (rows.length === 0) {
@@ -72,7 +77,7 @@ router.get('/deportes/:id', async (req, res) => {
   }
 });
 
-//PUT NO FUNCIONA
+//PUT
 router.put('/deportes/:id', async (req, res) => {
   try {
     const { id } = req.params;
