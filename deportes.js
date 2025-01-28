@@ -65,7 +65,7 @@ router.get('/deportes', async (req, res) => {
 //
 router.get('/deportes/:id', async (req, res) => {
   try {
-    const [id] = req.params['id'];
+    const id = req.params['id'];
 
     const query = `SELECT d.*, array_agg(json_build_object('nombre', u.nombre, 'apellido', u.apellido, 'edad', u.edad)) AS usuarios
         FROM deportes d
