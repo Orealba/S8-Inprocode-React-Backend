@@ -2,6 +2,15 @@ const express = require('express');
 const { Pool } = require('pg');
 const router = express.Router();
 const cors = require('cors');
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+router.use(cors(corsOptions));
+
 const pool = new Pool({
   user: process.env.USER,
   host: process.env.HOST,
@@ -9,8 +18,6 @@ const pool = new Pool({
   password: process.env.PASSWORD,
   port: process.env.PORT,
 });
-
-router.use(cors());
 
 //post tabla deportes
 router.post('/deportes', async (req, res) => {
