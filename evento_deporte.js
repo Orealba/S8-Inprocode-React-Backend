@@ -22,35 +22,30 @@ const pool = new Pool({
 
 //POST TABLA evento_deporte
 router.post('/evento_deporte', async (req, res) => {
-  // Validate the incoming JSON data
-  const { titulo, hora_inicio, hora_fin, descripcion, usuario_id } = req.body;
-  console.log(req.body);
-  if (!titulo || !hora_inicio || !hora_fin || !descripcion || !usuario_id) {
+  const { titulo, fecha_inicio, fecha_fin } = req.body;
+
+  if (!titulo || !fecha_inicio || !fecha_fin) {
     return res
       .status(400)
-      .send(
-        'One of the: titulo, hora_inicio, hora_fin, descripcion or usuario_id  is missing in the data',
-      );
+      .send('titulo, fecha_inicio, y fecha_fin son requeridos');
   }
 
   try {
-    // try to send data to the database
     const query = `
-        INSERT INTO evento_deporte (titulo, hora_inicio, hora_fin, descripcion, usuario_id)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO evento_deporte (titulo, fecha_inicio, fecha_fin)
+        VALUES ($1, $2, $3)
         RETURNING id;
-      `;
-    const values = [titulo, hora_inicio, hora_fin, descripcion, usuario_id];
+    `;
+    const values = [titulo, fecha_inicio, fecha_fin];
 
     const result = await pool.query(query, values);
-    console.log(result);
     res.status(201).send({
-      message: 'New evento_deporte created',
-      usuarioId: result.rows[0].id,
+      message: 'Nuevo evento_deporte creado',
+      id: result.rows[0].id,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('some error has occured');
+    res.status(500).send('Ha ocurrido un error');
   }
 });
 
@@ -73,7 +68,11 @@ router.get('/evento_deporte/:id', async (req, res) => {
   try {
     const [id] = req.params['id'];
 
-    const query = 'SELECT * FROM evento_deporte WHERE id = $1;';
+    const query = `
+        SELECT e.id, e.created_at, e.titulo, e.fecha_inicio, e.fecha_fin
+        FROM evento_deporte e
+        WHERE e.id = $1;
+    `;
     const { rows } = await pool.query(query, [id]);
 
     if (rows.length === 0) {
