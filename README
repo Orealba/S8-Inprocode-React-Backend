@@ -1,0 +1,56 @@
+### S8-Inprocode-React-Backend
+
+=================
+Descripción
+Este backend, desarrollado en Node.js, proporciona una API REST para gestionar eventos deportivos y usuarios. El proyecto se integra con una base de datos PostgreSQL alojada en Supabase y sirve como columna vertebral para una aplicación deportiva completa.
+Características Principales ⭐
+
+---
+
+Base de Datos Personalizada: Integración con Supabase
+API REST Completa:
+GET - Consulta de eventos y usuarios
+POST - Creación de nuevos eventos
+PUT - Actualización de eventos existentes
+DELETE - Eliminación de eventos
+Gestión de Usuarios
+Manejo de Eventos Deportivos
+
+## Stack Tecnológico 🛠️
+
+Node.js
+Express
+PostgreSQL (Supabase)
+CORS
+
+## Instalación 📦
+
+# Clonar el repositorio
+
+git clone https://github.com/Orealba/S8-Inprocode-React-Backend
+
+# Instalar dependencias
+
+npm install
+
+# Configurar variables de entorno
+
+cp .env.example .env
+
+# Editar .env con tus credenciales de Supabase
+
+# Iniciar el servidor
+
+npm run dev
+
+## Frontend Relacionado 🔗
+
+Este backend sirve como API para el frontend del proyecto, desarrollado en React:
+S8-Inprocode-React-
+https://github.com/Orealba/S8-Inprocode-React-
+
+## Contribución 🤝
+
+---
+
+Las contribuciones son bienvenidas. Por favor, abre un issue primero para discutir los cambios que te gustaría realizar.
