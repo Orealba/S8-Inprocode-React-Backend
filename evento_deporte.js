@@ -90,44 +90,36 @@ router.get('/evento_deporte/:id', async (req, res) => {
 router.put('/evento_deporte/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, hora_inicio, hora_fin, descripcion, usuario_id } = req.body;
+    const { titulo, fecha_inicio, fecha_fin } = req.body;
 
-    if (!titulo && !hora_inicio && !hora_fin && !descripcion && !usuario_id) {
+    if (!titulo && !fecha_inicio && !fecha_fin) {
       return res
         .status(400)
         .send(
-          'provide a field (titulo, hora_inicio, hora_fin, descripcion or usuario_id)',
+          'Proporcione al menos un campo para actualizar (titulo, fecha_inicio o fecha_fin)',
         );
     }
 
     const query = `
         UPDATE evento_deporte
         SET titulo = COALESCE($1, titulo),
-            hora_inicio = COALESCE($2, hora_inicio),
-            hora_fin = COALESCE($3, hora_fin),
-            descripcion = COALESCE($4, descripcion),
-            usuario_id = COALESCE($5, usuario_id)
-            
-        WHERE id = $6
+            fecha_inicio = COALESCE($2, fecha_inicio),
+            fecha_fin = COALESCE($3, fecha_fin)
+        WHERE id = $4
         RETURNING *;
-      `;
-    const { rows } = await pool.query(query, [
-      titulo,
-      hora_inicio,
-      hora_fin,
-      descripcion,
-      usuario_id,
-      id,
-    ]);
+    `;
+
+    const values = [titulo, fecha_inicio, fecha_fin, id];
+    const { rows } = await pool.query(query, values);
 
     if (rows.length === 0) {
-      return res.status(404).send('Cannot find anything');
+      return res.status(404).send('No se encontró el evento');
     }
 
     res.status(200).json(rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Some error has occured failed');
+    res.status(500).send('Ha ocurrido un error al actualizar el evento');
   }
 });
 
