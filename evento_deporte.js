@@ -20,7 +20,7 @@ const pool = new Pool({
   port: process.env.PORT,
 });
 
-//POST TABLA evento_deporte
+
 router.post('/evento_deporte', async (req, res) => {
   const { titulo, fecha_inicio, fecha_fin } = req.body;
 
@@ -49,7 +49,7 @@ router.post('/evento_deporte', async (req, res) => {
   }
 });
 
-//GET TABLE evento_deporte
+
 
 router.get('/evento_deporte', async (req, res) => {
   try {
@@ -62,7 +62,7 @@ router.get('/evento_deporte', async (req, res) => {
   }
 });
 
-//GET specific user
+
 
 router.get('/evento_deporte/:id', async (req, res) => {
   try {
@@ -86,7 +86,7 @@ router.get('/evento_deporte/:id', async (req, res) => {
   }
 });
 
-//PUT
+
 router.put('/evento_deporte/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -123,7 +123,7 @@ router.put('/evento_deporte/:id', async (req, res) => {
   }
 });
 
-//DELETE
+
 router.delete('/evento_deporte/:id', async (req, res) => {
   try {
     const { id } = req.params;

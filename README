@@ -3,6 +3,7 @@
 =================
 Descripción
 Este backend, desarrollado en Node.js, proporciona una API REST para gestionar eventos deportivos y usuarios. El proyecto se integra con una base de datos PostgreSQL alojada en Supabase y sirve como columna vertebral para una aplicación deportiva completa.
+
 Características Principales ⭐
 
 ---

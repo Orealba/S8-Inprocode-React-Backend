@@ -20,9 +20,9 @@ const pool = new Pool({
   port: process.env.PORT,
 });
 
-//POST TABLA USERS
+
 router.post('/usuarios', async (req, res) => {
-  // Validate the incoming JSON data
+  
   const { nombre, apellido, email, telefono, direccion, latitud, longitud } =
     req.body;
   console.log(req.body);
@@ -43,7 +43,7 @@ router.post('/usuarios', async (req, res) => {
   }
 
   try {
-    // try to send data to the database
+   
     const query = `
         INSERT INTO usuarios (nombre, apellido, email, telefono, direccion, latitud, longitud)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -70,7 +70,7 @@ router.post('/usuarios', async (req, res) => {
   }
 });
 
-//GET TABLE USERS
+
 
 router.get('/usuarios', async (req, res) => {
   try {
@@ -83,7 +83,6 @@ router.get('/usuarios', async (req, res) => {
   }
 });
 
-//GET specific user
 
 router.get('/usuarios/:id', async (req, res) => {
   try {
@@ -103,7 +102,6 @@ router.get('/usuarios/:id', async (req, res) => {
   }
 });
 
-//PUT
 router.put('/usuarios/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -160,7 +158,7 @@ router.put('/usuarios/:id', async (req, res) => {
   }
 });
 
-//DELETE
+
 router.delete('/usuarios/:id', async (req, res) => {
   try {
     const { id } = req.params;

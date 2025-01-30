@@ -7,7 +7,7 @@ const eventoDeporteRouter = require('./evento_deporte');
 const app = express();
 const port = 8080;
 
-// Configurar CORS antes de las rutas
+
 const corsOptions = {
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -17,13 +17,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Middleware para parsear JSON
+
 app.use(express.json());
 
-app.use(usuariosRouter); // Usa las rutas de usuarios
-app.use(deportesRouter); // Usa las rutas de deportes
-app.use(usuarioDeporteRouter); // Usa las rutas de usuario_deporte
-app.use(eventoDeporteRouter); // Usa las rutas de evento_deporte
+app.use(usuariosRouter); 
+app.use(deportesRouter); 
+app.use(usuarioDeporteRouter); 
+app.use(eventoDeporteRouter); 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
